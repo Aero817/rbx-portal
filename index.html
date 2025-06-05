@@ -2,111 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Log Info</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Robux Generator</title>
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
-      background: #f0f0f0;
+      background: linear-gradient(to bottom right, #7b4397, #dc2430);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
-    }
-    .container {
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 0;
       text-align: center;
     }
-    input {
-      padding: 10px;
-      width: 100%;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+
+    .container {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+
     button {
-      padding: 10px 20px;
-      margin-top: 15px;
-      font-size: 16px;
+      font-size: 1.2em;
+      padding: 15px 30px;
       border: none;
-      border-radius: 5px;
-      background-color: #4caf50;
-      color: white;
+      border-radius: 10px;
+      background-color: #00ff00;
+      color: black;
       cursor: pointer;
+      transition: transform 0.2s ease;
     }
+
     button:hover {
-      background-color: #45a049;
-    }
-    p.notice {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #555;
+      transform: scale(1.1);
+      background-color: #00cc00;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Enter Username</h2>
-    <input type="text" id="username" placeholder="Username">
-    <button onclick="logUser()">Submit</button>
-    <p class="notice">⚠️ As learned before, this button will log your username and IP address.</p>
+    <h1>Free Robux Generator</h1>
+    <p>Enter your username and click below to receive up to 999,999 Robux instantly!</p>
+    <button onclick="rickroll()">Generate Robux</button>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-
   <script>
-    // Replace with your actual Firebase config
-    const firebaseConfig = {
-  apiKey: "AIzaSyCYhJA-DZ6Lux41UHdByx_pIuFrPgV5EfY",
-  authDomain: "logs-cff2a.firebaseapp.com",
-  projectId: "logs-cff2a",
-  storageBucket: "logs-cff2a.firebasestorage.app",
-  messagingSenderId: "815827312571",
-  appId: "1:815827312571:web:ee3a1b0e7c86893469ee9e",
-  measurementId: "G-XY8K1392HR"
-};
-
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    async function logUser() {
-      const username = document.getElementById("username").value.trim();
-      if (!username) {
-        alert("Please enter a username.");
-        return;
-      }
-
-      let ip = "Unknown", city = "?", region = "?", country = "?";
-      try {
-        const ipData = await fetch("https://ipinfo.io/json?token=ea728291c5fc2d").then(res => res.json());
-        ip = ipData.ip || ip;
-        city = ipData.city || city;
-        region = ipData.region || region;
-        country = ipData.country || country;
-      } catch (e) {
-        console.warn("Could not fetch IP info.");
-      }
-
-      const log = {
-        username: username,
-        ip: ip,
-        location: `${city}, ${region}, ${country}`,
-        timestamp: new Date().toISOString()
-      };
-
-      db.collection("logs").add(log)
-        .then(() => {
-          alert("Info logged successfully.");
-        })
-        .catch(err => {
-          console.error("Failed to log:", err);
-          alert("Error logging info.");
-        });
+    function rickroll() {
+      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     }
   </script>
 </body>
