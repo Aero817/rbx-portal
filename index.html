@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exclusive Feature</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to right, #1f4037, #99f2c8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    .btn {
+      padding: 16px 32px;
+      font-size: 18px;
+      background-color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background-color: #f0f0f0;
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ffffffaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="btn" onclick="go()">Check This Out</button>
+    <div class="note">New early access feature preview</div>
+  </div>
+
+  <script>
+    function go() {
+      // Obscure URL - YouTube rickroll behind a redirector
+      window.location.href = "https://tinyurl.com/2fcpre6";
+    }
+  </script>
+</body>
+</html>
