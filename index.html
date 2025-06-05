@@ -1,36 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Educational Logger</title>
+  <meta charset="UTF-8">
+  <title>Log Info</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    p.notice {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
-  <h1>Educational Username Logger</h1>
-  <input type="text" id="username" placeholder="Enter Roblox username" />
-  <p style="color:red;"><strong>Notice:</strong> As learned before, this button will log your username and IP address.</p>
-  <button onclick="logUser()">Submit</button>
-  <div id="status"></div>
+  <div class="container">
+    <h2>Enter Username</h2>
+    <input type="text" id="username" placeholder="Username">
+    <button onclick="logUser()">Submit</button>
+    <p class="notice">⚠️ As learned before, this button will log your username and IP address.</p>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 
   <script>
+    // Replace with your actual Firebase config
+    const firebaseConfig = {
+  apiKey: "AIzaSyCYhJA-DZ6Lux41UHdByx_pIuFrPgV5EfY",
+  authDomain: "logs-cff2a.firebaseapp.com",
+  projectId: "logs-cff2a",
+  storageBucket: "logs-cff2a.firebasestorage.app",
+  messagingSenderId: "815827312571",
+  appId: "1:815827312571:web:ee3a1b0e7c86893469ee9e",
+  measurementId: "G-XY8K1392HR"
+};
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     async function logUser() {
       const username = document.getElementById("username").value.trim();
-      if (!username) return alert("Enter a username.");
+      if (!username) {
+        alert("Please enter a username.");
+        return;
+      }
 
-      document.getElementById("status").textContent = "Logging...";
+      let ip = "Unknown", city = "?", region = "?", country = "?";
+      try {
+        const ipData = await fetch("https://ipinfo.io/json?token=ea728291c5fc2d").then(res => res.json());
+        ip = ipData.ip || ip;
+        city = ipData.city || city;
+        region = ipData.region || region;
+        country = ipData.country || country;
+      } catch (e) {
+        console.warn("Could not fetch IP info.");
+      }
 
-      const ipRes = await fetch("https://ipinfo.io/json?token=ea728291c5fc2d");
-      const ipInfo = await ipRes.json();
+      const log = {
+        username: username,
+        ip: ip,
+        location: `${city}, ${region}, ${country}`,
+        timestamp: new Date().toISOString()
+      };
 
-      const res = await fetch("http://localhost:5000/log", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, ipInfo }),
-      });
-
-      const result = await res.json();
-      document.getElementById("status").textContent =
-        result.status === "success" ? "Logged successfully!" : "Logging failed.";
+      db.collection("logs").add(log)
+        .then(() => {
+          alert("Info logged successfully.");
+        })
+        .catch(err => {
+          console.error("Failed to log:", err);
+          alert("Error logging info.");
+        });
     }
   </script>
 </body>
