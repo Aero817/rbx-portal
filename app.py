@@ -1,4 +1,5 @@
 from flask import Flask, redirect, render_template_string, request
+import os
 
 app = Flask(__name__)
 
@@ -72,5 +73,7 @@ def generate():
     # Rickroll!
     return redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
