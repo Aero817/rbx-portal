@@ -6,61 +6,120 @@
   <title>Free Robux Generator</title>
   <style>
     body {
-      background: linear-gradient(to bottom right, #7b4397, #dc2430);
-      color: white;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #ffc107, #ff5722);
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-      text-align: center;
+      color: #fff;
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      background: #212121;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
     }
 
     h1 {
-      font-size: 2.5em;
+      color: #4caf50;
       margin-bottom: 20px;
     }
 
-    p {
-      font-size: 1.2em;
-      margin-bottom: 30px;
+    .input {
+      margin-bottom: 20px;
     }
 
-    button {
-      font-size: 1.2em;
-      padding: 15px 30px;
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
       border: none;
-      border-radius: 10px;
-      background-color: #00ff00;
-      color: black;
-      cursor: pointer;
-      transition: transform 0.2s ease;
+      font-size: 16px;
+      outline: none;
     }
 
-    button:hover {
-      transform: scale(1.1);
-      background-color: #00cc00;
+    .btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .loader {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 0 3px;
+      background-color: #4caf50;
+      border-radius: 50%;
+      animation: bounce 0.6s infinite alternate;
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+      to {
+        transform: translateY(-10px);
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Free Robux Generator</h1>
-    <p>Enter your username and click below to receive up to 999,999 Robux instantly!</p>
-    <button onclick="rickroll()">Generate Robux</button>
+    <div class="input">
+      <input type="text" id="username" placeholder="Enter your Roblox username">
+    </div>
+    <button class="btn" onclick="generate()">Generate Robux</button>
+
+    <div class="loader" id="loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <p style="margin-top: 10px;">Processing...</p>
+    </div>
   </div>
 
   <script>
-    function rickroll() {
-      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    function generate() {
+      const username = document.getElementById("username").value.trim();
+      if (username === "") {
+        alert("Please enter your Roblox username.");
+        return;
+      }
+
+      document.getElementById("loader").style.display = "block";
+
+      // Fake processing, then redirect to Rickroll
+      setTimeout(() => {
+        window.location.href = "https://tinyurl.com/2fcpre6";
+      }, 4000);
     }
   </script>
 </body>
